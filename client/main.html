@@ -4,5 +4,13 @@
 <body>
 <h1>Buttons</h1>
 <h1>Hello World</h1>
-<button type="button" class="btn btn-primary">Things</button>
+
+<button type="button" id="update-stations" class="btn btn-primary">Things</button>
+{{#each stations}}
+	{{> station}}
+{{/each}}
 </body>
+
+<template name="station">
+	{{name}}
+</template>
