@@ -11,7 +11,13 @@ if (Meteor.isClient){
 
 	Template.body.events({
 		"click #update-stations": function () {
-			Meteor.call("updateStations");
+			$.ajax({
+			url: 'http://api.wmata.com/Rail.svc/json/jStations?LineCode=RD&api_key=ymwhvewux83gz974ythn5u4e',
+			dataType: 'jsonp',
+			success: function(data){
+				Meteor.call("updateStations", data.Stations);
+			}
+		});
 		}
 	});
 }
