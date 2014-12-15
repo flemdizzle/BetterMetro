@@ -16,10 +16,3 @@ if (Meteor.isClient){
 	});
 }
 
-Meteor.methods({
-	updateStations: function(){
-		console.log('hey');
-		var output = $.getJSON("http://api.wmata.com/Rail.svc/json/jStations?LineCode=OR&api_key=ymwhvewux83gz974ythn5u4e");
-		
-	}
-});
