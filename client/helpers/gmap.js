@@ -13,6 +13,8 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   directionsDisplay.setMap(map);
   directionsService = new google.maps.DirectionsService();
+  var transitLayer = new google.maps.TransitLayer();
+    transitLayer.setMap(map);
     // var capitalLogo = 'http://i.imgur.com/tfuTdYg.png';
     // 
     // for (i = 0; i < stations.length; i++) {
@@ -23,7 +25,18 @@ function initialize() {
     //   });
     // 
     // }
-};
+    var train = Meteor.call("returnOneTrain");
+    var infowindow = new google.maps.InfoWindow({
+          content: train
+      });
+
+    marker = new google.maps.Marker({
+      position: new google.maps.LatLng(38.914873, -77.060494),
+      map: map
+    });
+
+    infowindow.open(map,marker);
+}
 
 
 function calcRoute() {
