@@ -3,17 +3,12 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 </head>
 <body>
-<div id="map-container" >
-  <div id="map-canvas" >
-  </div>
-</div>
-
-{{#each trains}}
-  {{Destination}}
-  {{Min}}
-{{/each}}
-
+    {{> header}}
+    <div class="container app-width">
+        <div id="main">
+            {{renderPage}}
+        </div>
+    </div>
 </body>
-
 
 

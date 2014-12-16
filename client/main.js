@@ -1,7 +1,3 @@
-Meteor.subscribe('stations');
-
-Meteor.subscribe('trains');
-
 Template.body.helpers({
 	stations: function(){
 		return Stations.find({});
