@@ -2,15 +2,21 @@
 	<title></title>
 </head>
 <body>
-<h1>Buttons</h1>
-<h1>Hello World</h1>
+<h1>Better Metro</h1>
 
-<button type="button" id="update-stations" class="btn btn-primary">Things</button>
+<button type="button" id="update-stations" class="btn btn-primary">Update Stations</button>
+<button type="button" id="clear-stations" class="btn btn-danger">Clear Stations</button>
+
+<br>
 {{#each stations}}
 	{{> station}}
 {{/each}}
 </body>
 
 <template name="station">
-	{{Name}}
+  <ul style="none">
+      <li>{{Name}}</li>
+      <li>{{Lat}}</li>
+      <li>{{Lon}}</li>
+  </ul>
 </template>
