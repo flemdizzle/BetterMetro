@@ -3,18 +3,17 @@ Template.map.rendered = function() {
         gmaps.initialize();
  
     Deps.autorun(function() {
-        var pages = FacebookPages.find().fetch();
- 
-        _.each(pages, function(page) {
-            if (typeof page.location !== 'undefined' &&
-                typeof page.location.latitude !== 'undefined' &&
-                typeof page.location.longitude !== 'undefined') {
+        var stations = Stations.find().fetch();
+        _.each(stations, function(station) {
+            if (typeof station !== 'undefined' &&
+                typeof station.Lat !== 'undefined' &&
+                typeof station.Lon !== 'undefined') {
  
                 var objMarker = {
-                    id: page._id,
-                    lat: page.location.latitude,
-                    lng: page.location.longitude,
-                    title: page.name
+                    id: station._id,
+                    lat: station.Lat,
+                    lng: station.Lon,
+                    title: station.Name
                 };
  
                 // check if marker already exists
