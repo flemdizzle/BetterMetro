@@ -12,18 +12,18 @@ function initialize() {
   };
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   directionsDisplay.setMap(map);
-directionsService = new google.maps.DirectionsService();
-    var capitalLogo = 'http://i.imgur.com/tfuTdYg.png';
-
-    for (i = 0; i < stations.length; i++) {
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(stations[i][0], stations[i][1]),
-        icon: capitalLogo,
-        map: map
-      });
-
-  }
-}
+  directionsService = new google.maps.DirectionsService();
+    // var capitalLogo = 'http://i.imgur.com/tfuTdYg.png';
+    // 
+    // for (i = 0; i < stations.length; i++) {
+    //   marker = new google.maps.Marker({
+    //     position: new google.maps.LatLng(stations[i][0], stations[i][1]),
+    //     icon: capitalLogo,
+    //     map: map
+    //   });
+    // 
+    // }
+};
 
 
 function calcRoute() {
