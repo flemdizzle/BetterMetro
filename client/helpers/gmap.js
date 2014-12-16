@@ -21,10 +21,27 @@ gmaps = {
             // animation: google.maps.Animation.DROP,
             icon:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
         });
+
+        // this creates the content for the infowindow
+        // for (var i = 0; i < marker.trains.length; i++) {
+        //   marker.trains[i].Min;
+        // };
+        // this creates the info window for the marker
+        var infowindow = new google.maps.InfoWindow({
+          content: marker.trains
+        });
+
         this.latLngs.push(gLatLng);
         this.markers.push(gMarker);
         this.markerData.push(marker);
+
+        // this opens the info window
+        infowindow.open(this.map,gMarker);
+
+        console.log(this.markers);
+        
         return gMarker;
+
     },
  
     // calculate and move the bound box based on our markers
@@ -50,19 +67,23 @@ gmaps = {
         console.log("[+] Intializing Google Maps...");
         var mapOptions = {
             zoom: 12,
-            center: new google.maps.LatLng(53.565, 10.001),
-            mapTypeId: google.maps.MapTypeId.HYBRID
+            center: new google.maps.LatLng(38.914873, -77.060494),
+            mapTypeId: google.maps.MapTypeId.NORMAL
         };
  
         this.map = new google.maps.Map(
             document.getElementById('map-canvas'),
             mapOptions
         );
+
+        // // adds transit overlay
+        var transitLayer = new google.maps.TransitLayer();
+        transitLayer.setMap(this.map);
  
         // global flag saying we intialized already
-        Session.set('map', true);
+        // Session.set('map', true);
     }
-}
+};
 
 // var directionsDisplay;
 // var map;
@@ -91,6 +112,7 @@ gmaps = {
 //     // 
 //     // }
 //     var train = Meteor.call("returnOneTrain");
+
 //     var infowindow = new google.maps.InfoWindow({
 //           content: train
 //       });

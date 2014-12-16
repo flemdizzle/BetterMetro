@@ -6,4 +6,4 @@ Meteor.setInterval(function(){
       Meteor.call("addTrains", data.Trains);
     }
   });
-}, 20000);
+}, 10000);
