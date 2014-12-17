@@ -10,6 +10,9 @@ gmaps = {
  
     // our formatted marker data objects
     markerData: [],
+
+    // info window array
+    infoWindow: [],
  
     // add a marker given our formatted marker data object
     addMarker: function(marker) {
@@ -22,26 +25,25 @@ gmaps = {
             icon:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
         });
 
-        // this creates the content for the infowindow
-        // for (var i = 0; i < marker.trains.length; i++) {
-        //   marker.trains[i].Min;
-        // };
-        // this creates the info window for the marker
-        var infowindow = new google.maps.InfoWindow({
-          content: marker.trains
-        });
-
         this.latLngs.push(gLatLng);
         this.markers.push(gMarker);
         this.markerData.push(marker);
 
-        // this opens the info window
-        infowindow.open(this.map,gMarker);
 
-        console.log(this.markers);
+        console.log("google markers" + this.markers.length.toString());
+        console.log("marker data" + this.markerData.length.toString());
         
         return gMarker;
 
+    },
+
+    // adds info windows to existing markers
+    addInfoWindow: function(trainStatus){
+        var infowindow = new google.maps.InfoWindow({
+          content: trainStatus.message
+        });
+        // this opens the info window
+        infowindow.open(this.map, this.markers[trainStatus.markerIndex]);
     },
  
     // calculate and move the bound box based on our markers
@@ -55,9 +57,11 @@ gmaps = {
  
     // check if a marker already exists
     markerExists: function(key, val) {
-        _.each(this.markers, function(storedMarker) {
-            if (storedMarker[key] == val)
+        _.each(this.markerData, function(storedMarker) {
+            if (storedMarker[key] == val){
+                console.log("true");
                 return true;
+            }
         });
         return false;
     },

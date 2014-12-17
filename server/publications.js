@@ -1,6 +1,6 @@
 
 Meteor.publish('stations', function(){
-	return Stations.find({LineCode1: "OR"});
+	return Stations.find({});
 });
 
 Meteor.publish('trains', function(){
