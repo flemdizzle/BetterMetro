@@ -1,7 +1,9 @@
 
 Template.map.rendered = function() {
     gmaps.initialize();
-    
+    navigator.geolocation.getCurrentPosition(function(position) {
+      console.log(position.coords.latitude, position.coords.longitude);
+    });
      
 };
 
@@ -26,6 +28,9 @@ Meteor.subscribe('stations', function(){
     });
 
     Deps.autorun(function() {
+        for (var a = 0; a < gmaps.infoWindows.length; a++) {
+            gmaps.infoWindows[a].close();
+        }
         var data = Trains.find({});
         console.log("[+] Loading Info Windows...");
         for (var i = 0; i < gmaps.markerData.length; i++) {
@@ -34,7 +39,7 @@ Meteor.subscribe('stations', function(){
             var trainsAtStation = "";
 
             for (var x = 0; x < trainArray.length; x++) {
-                trainsAtStation += trainArray[x].Line + " " + trainArray[x].DestinationName + " " + trainArray[x].Min + "\n";
+                trainsAtStation += '<li>' + trainArray[x].Line + ' ' + trainArray[x].DestinationName + ' ' + trainArray[x].Min + '</li>';
             }
 
             var trainStatus = {
