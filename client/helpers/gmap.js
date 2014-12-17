@@ -12,7 +12,7 @@ gmaps = {
     markerData: [],
 
     // info window array
-    infoWindow: [],
+    infoWindows: [],
  
     // add a marker given our formatted marker data object
     addMarker: function(marker) {
@@ -29,21 +29,20 @@ gmaps = {
         this.markers.push(gMarker);
         this.markerData.push(marker);
 
-
-        console.log("google markers" + this.markers.length.toString());
-        console.log("marker data" + this.markerData.length.toString());
-        
         return gMarker;
 
     },
 
     // adds info windows to existing markers
     addInfoWindow: function(trainStatus){
-        var infowindow = new google.maps.InfoWindow({
+        var gInfowindow = new google.maps.InfoWindow({
           content: trainStatus.message
         });
+
+        this.infoWindows.push(gInfowindow);
+
         // this opens the info window
-        infowindow.open(this.map, this.markers[trainStatus.markerIndex]);
+        gInfowindow.open(this.map, this.markers[trainStatus.markerIndex]);
     },
  
     // calculate and move the bound box based on our markers

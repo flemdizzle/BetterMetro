@@ -3,6 +3,7 @@ Meteor.setInterval(function(){
     url: 'http://api.wmata.com/StationPrediction.svc/json/GetPrediction/All?api_key=ymwhvewux83gz974ythn5u4e',
     dataType: 'jsonp',
     success: function(data){
+      console.log("[+] Loading Trains...");
       Meteor.call("addTrains", data.Trains);
     }
   });
