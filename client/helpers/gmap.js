@@ -63,9 +63,14 @@ gmaps = {
     walkingDistanceStations: function(stationArray){
       var walkingStations = [];
       for (var i = 0; i < stationArray.length; i++) {
-        stationArray[i]
-      };
-      var result = google.maps.geometry.spherical.computeDistanceBetween(latLng, tstLatLng);
+        var stationLatLng = new google.maps.LatLng(stationArray[i].Lat, stationArray[i].Lon);
+        
+        //returns distance between two latlngs using google geometry library
+        var result = google.maps.geometry.spherical.computeDistanceBetween(this.userLocation, stationLatLng);
+        if(result < 1300){
+          walkingStations.push(stationArray[i]);
+        }
+      }
       
       return walkingStations;
     },
