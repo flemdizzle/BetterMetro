@@ -2,7 +2,21 @@
 Template.map.rendered = function() {
     gmaps.initialize();
     navigator.geolocation.getCurrentPosition(function(position) {
-      console.log(position.coords.latitude, position.coords.longitude);
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var latLng = new google.maps.LatLng(lat, lng);
+        var tstLatLng = new google.maps.LatLng(38.904518, -77.054880);
+        console.log(lat, lng);
+        gmaps.map.setCenter(latLng);
+        gmaps.map.setZoom(16);
+        new google.maps.Marker({
+            position: latLng,
+            map: gmaps.map,
+            icon:'https://storage.googleapis.com/support-kms-prod/SNP_2752129_en_v0'
+        });
+        var result = google.maps.geometry.spherical.computeDistanceBetween(latLng, tstLatLng);
+        console.log(result);
+
     });
      
 };
