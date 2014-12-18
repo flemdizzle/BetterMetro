@@ -16,6 +16,9 @@ gmaps = {
 
     // user location
     userLocation: null,
+
+    //user marker
+    userMarker: null,
  
     // add a marker given our formatted marker data object
     addMarker: function(marker) {
@@ -38,13 +41,14 @@ gmaps = {
 
     // centers map on users location and stuff
     centerMap: function(){
-      new google.maps.Marker({
+      var marker = new google.maps.Marker({
             position: this.userLocation,
             map: this.map,
             icon:'https://storage.googleapis.com/support-kms-prod/SNP_2752129_en_v0'
-        });
-        gmaps.map.setZoom(16);
-        gmaps.map.setCenter(this.userLocation);
+      });
+      gmaps.map.setZoom(16);
+      gmaps.map.setCenter(this.userLocation);
+      this.userMarker = marker;
     },
 
     // adds info windows to existing markers
@@ -60,19 +64,30 @@ gmaps = {
     },
  
     // returns stations that are walking distance
-    walkingDistanceStations: function(stationArray){
+    walkingDistanceStations: function(stationArray, callback){
       var walkingStations = [];
       for (var i = 0; i < stationArray.length; i++) {
         var stationLatLng = new google.maps.LatLng(stationArray[i].Lat, stationArray[i].Lon);
         
         //returns distance between two latlngs using google geometry library
         var result = google.maps.geometry.spherical.computeDistanceBetween(this.userLocation, stationLatLng);
-        if(result < 1300){
+        if(result < 800){
           walkingStations.push(stationArray[i]);
         }
       }
       
-      return walkingStations;
+      callback(walkingStations);
+    },
+
+    // define zoom based on rendered markers
+    markerBounds: function(){
+      console.log("done");
+      var bounds = new google.maps.LatLngBounds();
+      bounds.extend(this.userMarker.getPosition());
+      for (var i = 0; i < this.markers.length; i++) {
+        bounds.extend(this.markers[i].getPosition());
+      };
+      this.map.fitBounds(bounds);
     },
  
     // intialize the map

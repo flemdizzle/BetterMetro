@@ -6,23 +6,28 @@ Template.map.rendered = function() {
         gmaps.centerMap();
 
         Meteor.subscribe('stations', function(){
-            var stations = Stations.find().fetch();
-            _.each(stations, function(station) {
-                if (typeof station !== 'undefined' &&
-                    typeof station.Lat !== 'undefined' &&
-                    typeof station.Lon !== 'undefined') {
+            function buildStationObjects(stations){
+                _.each(stations, function(station) {
+                    if (typeof station !== 'undefined' &&
+                        typeof station.Lat !== 'undefined' &&
+                        typeof station.Lon !== 'undefined') {
 
-                    var objMarker = {
-                        id: station._id,
-                        lat: station.Lat,
-                        lng: station.Lon,
-                        title: station.Name,
-                        code: station.Code
-                    };
+                        var objMarker = {
+                            id: station._id,
+                            lat: station.Lat,
+                            lng: station.Lon,
+                            title: station.Name,
+                            code: station.Code
+                        };
 
-                    gmaps.addMarker(objMarker);
-                }
-            });
+                        gmaps.addMarker(objMarker);
+                    }
+                });
+
+                // re-center on new markers
+                gmaps.markerBounds();
+            }
+            gmaps.walkingDistanceStations(Stations.find().fetch(), buildStationObjects);
 
             Deps.autorun(function() {
                 for (var a = 0; a < gmaps.infoWindows.length; a++) {
