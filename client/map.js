@@ -33,7 +33,6 @@ Template.map.rendered = function() {
                 for (var a = 0; a < gmaps.infoWindows.length; a++) {
                     gmaps.infoWindows[a].close();
                 }
-                var data = Trains.find({});
                 console.log("[+] Loading Info Windows...");
                 for (var i = 0; i < gmaps.markerData.length; i++) {
                     var trainArray = Trains.find({LocationCode: gmaps.markerData[i].code}).fetch();
