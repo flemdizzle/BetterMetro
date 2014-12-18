@@ -1,15 +1,3 @@
-Meteor.subscribe('stations');
-
-Meteor.subscribe('trains');
-
-Template.body.helpers({
-	stations: function(){
-		return Stations.find({});
-	},
-	trains: function(){
-		return Trains.find({});
-	}
-});
 
 Template.body.events({
 	"click #update-stations": function () {

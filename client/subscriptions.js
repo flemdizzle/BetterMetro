@@ -1,3 +1,4 @@
-Meteor.subscribe('stations');
 
 Meteor.subscribe('trains');
+
+Meteor.subscribe('API');

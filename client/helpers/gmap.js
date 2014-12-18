@@ -1,79 +1,112 @@
+gmaps = {
+    // map object
+    map: null,
+ 
+    // google markers objects
+    markers: [],
+ 
+    // google lat lng objects
+    latLngs: [],
+ 
+    // our formatted marker data objects
+    markerData: [],
 
-var directionsDisplay;
-var map;
-var directionsService;
+    // info window array
+    infoWindows: [],
 
-function initialize() {
-  directionsDisplay = new google.maps.DirectionsRenderer();
-  var mapOptions = {
-    center: new google.maps.LatLng(38.914873, -77.060494),
-    zoom: 13,
-    mapTypeId: google.maps.MapTypeId.NORMAL
-  };
-  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-  directionsDisplay.setMap(map);
-  directionsService = new google.maps.DirectionsService();
-  var transitLayer = new google.maps.TransitLayer();
-    transitLayer.setMap(map);
-    // var capitalLogo = 'http://i.imgur.com/tfuTdYg.png';
-    // 
-    // for (i = 0; i < stations.length; i++) {
-    //   marker = new google.maps.Marker({
-    //     position: new google.maps.LatLng(stations[i][0], stations[i][1]),
-    //     icon: capitalLogo,
-    //     map: map
-    //   });
-    // 
-    // }
-    var train = Meteor.call("returnOneTrain");
-    var infowindow = new google.maps.InfoWindow({
-          content: train
+    // user location
+    userLocation: null,
+
+    //user marker
+    userMarker: null,
+ 
+    // add a marker given our formatted marker data object
+    addMarker: function(marker) {
+        var gLatLng = new google.maps.LatLng(marker.lat, marker.lng);
+        var gMarker = new google.maps.Marker({
+            position: gLatLng,
+            map: this.map,
+            title: marker.title
+            // animation: google.maps.Animation.DROP,
+            // icon:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+        });
+
+        this.latLngs.push(gLatLng);
+        this.markers.push(gMarker);
+        this.markerData.push(marker);
+
+        return gMarker;
+
+    },
+
+    // centers map on users location and stuff
+    centerMap: function(){
+      var marker = new google.maps.Marker({
+            position: this.userLocation,
+            map: this.map,
+            icon:'https://storage.googleapis.com/support-kms-prod/SNP_2752129_en_v0'
       });
+      gmaps.map.setZoom(16);
+      gmaps.map.setCenter(this.userLocation);
+      this.userMarker = marker;
+    },
 
-    marker = new google.maps.Marker({
-      position: new google.maps.LatLng(38.914873, -77.060494),
-      map: map
-    });
+    // adds info windows to existing markers
+    addInfoWindow: function(trainStatus){
+        var gInfowindow = new google.maps.InfoWindow({
+          content: trainStatus.message
+        });
 
-    infowindow.open(map,marker);
-}
+        this.infoWindows.push(gInfowindow);
 
+        // this opens the info window
+        gInfowindow.open(this.map, this.markers[trainStatus.markerIndex]);
+    },
+ 
+    // returns stations that are walking distance
+    walkingDistanceStations: function(stationArray, callback){
+      var walkingStations = [];
+      for (var i = 0; i < stationArray.length; i++) {
+        var stationLatLng = new google.maps.LatLng(stationArray[i].Lat, stationArray[i].Lon);
+        
+        //returns distance between two latlngs using google geometry library
+        var result = google.maps.geometry.spherical.computeDistanceBetween(this.userLocation, stationLatLng);
+        if(result < 800){
+          walkingStations.push(stationArray[i]);
+        }
+      }
+      
+      callback(walkingStations);
+    },
 
-function calcRoute() {
-  var start = startTrip;
-  var end = endTrip;
-  var waypts = [];
-  var radioArray =$('.active input');
-  for (var i = 0; i < radioArray.length; i++) {
-      waypts.push({
-          location:radioArray[i].value,
-          stopover:true});
-  }
+    // define zoom based on rendered markers
+    markerBounds: function(){
+      console.log("done");
+      var bounds = new google.maps.LatLngBounds();
+      bounds.extend(this.userMarker.getPosition());
+      for (var i = 0; i < this.markers.length; i++) {
+        bounds.extend(this.markers[i].getPosition());
+      };
+      this.map.fitBounds(bounds);
+    },
+ 
+    // intialize the map
+    initialize: function() {
+        console.log("[+] Intializing Google Maps...");
+        var mapOptions = {
+            zoom: 12,
+            center: new google.maps.LatLng(38.914873, -77.060494),
+            mapTypeId: google.maps.MapTypeId.NORMAL
+        };
+ 
+        this.map = new google.maps.Map(
+            document.getElementById('map-canvas'),
+            mapOptions
+        );
 
-  var request = {
-      origin: start,
-      destination: end,
-      waypoints: waypts,
-      optimizeWaypoints: true,
-      travelMode: google.maps.TravelMode.BICYCLING
-  };
-  directionsService.route(request, function(response, status) {
-    if (status == google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(response);
-      var route = response.routes[0];
-      var summaryPanel = document.getElementById('directions_panel');
-      // summaryPanel.innerHTML = '';
-      // // For each route, display summary information.
-      // for (var i = 0; i < route.legs.length; i++) {
-      //   var routeSegment = i + 1;
-      //   summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment + '</b><br>';
-      //   summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-      //   summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-      //   summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-      // }
+        // // adds transit overlay
+        var transitLayer = new google.maps.TransitLayer();
+        transitLayer.setMap(this.map);
+ 
     }
-  });
-}
-
-// $(document).ready(initialize);
-// $(document).on('page:load', initialize);
+};
