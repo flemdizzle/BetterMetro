@@ -13,6 +13,9 @@ gmaps = {
 
     // info window array
     infoWindows: [],
+
+    // user location
+    userLocation: null,
  
     // add a marker given our formatted marker data object
     addMarker: function(marker) {
@@ -33,6 +36,17 @@ gmaps = {
 
     },
 
+    // centers map on users location and stuff
+    centerMap: function(){
+      new google.maps.Marker({
+            position: this.userLocation,
+            map: this.map,
+            icon:'https://storage.googleapis.com/support-kms-prod/SNP_2752129_en_v0'
+        });
+        gmaps.map.setZoom(16);
+        gmaps.map.setCenter(this.userLocation);
+    },
+
     // adds info windows to existing markers
     addInfoWindow: function(trainStatus){
         var gInfowindow = new google.maps.InfoWindow({
@@ -45,15 +59,15 @@ gmaps = {
         gInfowindow.open(this.map, this.markers[trainStatus.markerIndex]);
     },
  
-    // check if a marker already exists
-    markerExists: function(key, val) {
-        _.each(this.markerData, function(storedMarker) {
-            if (storedMarker[key] == val){
-                console.log("true");
-                return true;
-            }
-        });
-        return false;
+    // returns stations that are walking distance
+    walkingDistanceStations: function(stationArray){
+      var walkingStations = [];
+      for (var i = 0; i < stationArray.length; i++) {
+        stationArray[i]
+      };
+      var result = google.maps.geometry.spherical.computeDistanceBetween(latLng, tstLatLng);
+      
+      return walkingStations;
     },
  
     // intialize the map
@@ -74,87 +88,5 @@ gmaps = {
         var transitLayer = new google.maps.TransitLayer();
         transitLayer.setMap(this.map);
  
-        // global flag saying we intialized already
-        // Session.set('map', true);
     }
 };
-
-// var directionsDisplay;
-// var map;
-// var directionsService;
-
-// function initialize() {
-//   directionsDisplay = new google.maps.DirectionsRenderer();
-//   var mapOptions = {
-//     center: new google.maps.LatLng(38.914873, -77.060494),
-//     zoom: 13,
-//     mapTypeId: google.maps.MapTypeId.NORMAL
-//   };
-//   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-//   directionsDisplay.setMap(map);
-//   directionsService = new google.maps.DirectionsService();
-//   var transitLayer = new google.maps.TransitLayer();
-//     transitLayer.setMap(map);
-//     // var capitalLogo = 'http://i.imgur.com/tfuTdYg.png';
-//     // 
-//     // for (i = 0; i < stations.length; i++) {
-//     //   marker = new google.maps.Marker({
-//     //     position: new google.maps.LatLng(stations[i][0], stations[i][1]),
-//     //     icon: capitalLogo,
-//     //     map: map
-//     //   });
-//     // 
-//     // }
-//     var train = Meteor.call("returnOneTrain");
-
-//     var infowindow = new google.maps.InfoWindow({
-//           content: train
-//       });
-
-//     marker = new google.maps.Marker({
-//       position: new google.maps.LatLng(38.914873, -77.060494),
-//       map: map
-//     });
-
-//     infowindow.open(map,marker);
-// }
-
-
-// function calcRoute() {
-//   var start = startTrip;
-//   var end = endTrip;
-//   var waypts = [];
-//   var radioArray =$('.active input');
-//   for (var i = 0; i < radioArray.length; i++) {
-//       waypts.push({
-//           location:radioArray[i].value,
-//           stopover:true});
-//   }
-
-//   var request = {
-//       origin: start,
-//       destination: end,
-//       waypoints: waypts,
-//       optimizeWaypoints: true,
-//       travelMode: google.maps.TravelMode.BICYCLING
-//   };
-//   directionsService.route(request, function(response, status) {
-//     if (status == google.maps.DirectionsStatus.OK) {
-//       directionsDisplay.setDirections(response);
-//       var route = response.routes[0];
-//       var summaryPanel = document.getElementById('directions_panel');
-//       // summaryPanel.innerHTML = '';
-//       // // For each route, display summary information.
-//       // for (var i = 0; i < route.legs.length; i++) {
-//       //   var routeSegment = i + 1;
-//       //   summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment + '</b><br>';
-//       //   summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-//       //   summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-//       //   summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-//       // }
-//     }
-//   });
-// }
-
-// $(document).ready(initialize);
-// $(document).on('page:load', initialize);
