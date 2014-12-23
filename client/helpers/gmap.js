@@ -40,15 +40,12 @@ gmaps = {
     },
 
     // centers map on users location and stuff
-    // refactor this!
     centerMap: function(){
       var marker = new google.maps.Marker({
             position: this.userLocation,
             map: this.map,
             icon:'https://storage.googleapis.com/support-kms-prod/SNP_2752129_en_v0'
       });
-      gmaps.map.setZoom(16);
-      gmaps.map.setCenter(this.userLocation);
       this.userMarker = marker;
     },
 
@@ -87,7 +84,7 @@ gmaps = {
       bounds.extend(this.userMarker.getPosition());
       for (var i = 0; i < this.markers.length; i++) {
         bounds.extend(this.markers[i].getPosition());
-      };
+      }
       this.map.fitBounds(bounds);
     },
  
