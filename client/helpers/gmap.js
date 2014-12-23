@@ -40,6 +40,7 @@ gmaps = {
     },
 
     // centers map on users location and stuff
+    // refactor this!
     centerMap: function(){
       var marker = new google.maps.Marker({
             position: this.userLocation,
