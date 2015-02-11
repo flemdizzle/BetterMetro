@@ -32,6 +32,7 @@ gmaps = {
         });
 
         this.latLngs.push(gLatLng);
+        gMarker.customID = marker.id;
         this.markers.push(gMarker);
         this.markerData.push(marker);
 
@@ -64,6 +65,8 @@ gmaps = {
     // returns stations that are walking distance
     walkingDistanceStations: function(stationArray, callback){
       var walkingStations = [];
+
+      //Optimize this later
       for (var i = 0; i < stationArray.length; i++) {
         var stationLatLng = new google.maps.LatLng(stationArray[i].Lat, stationArray[i].Lon);
         

@@ -3,7 +3,13 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry"></script>
 </head>
 <body>
-  {{> map}}
+  {{#if isDesktop}}
+    {{> map}}
+  {{/if}}
+
+  {{#if isPhone}}
+    <h1>BONERS</h1>
+  {{/if}}
 </body>
 
 

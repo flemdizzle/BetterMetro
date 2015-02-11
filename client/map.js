@@ -3,6 +3,7 @@ Template.map.rendered = function() {
     gmaps.initialize();
     navigator.geolocation.getCurrentPosition(function(position) {
         gmaps.userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        // remove this?
         gmaps.centerMap();
 
         Meteor.subscribe('stations', function(){
