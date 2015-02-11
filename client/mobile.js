@@ -25,24 +25,30 @@ Meteor.subscribe('stations', function(){
   navigator.geolocation.watchPosition(function(position) {
     Session.set("userLocation", new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
     mobile.walkingDistanceStations(Stations.find().fetch());
-  });
+    
+    Deps.autorun(function(){
+      //have this set a session variable to the current trains
+      var walkingStations = mobile.closeStations;
 
-  Deps.autorun(function(){
-    //have this set a session variable to the current trains
+      var trains = [];
 
-    // trainInfo: function(walkingStations){
-    // for(var i = 0, leng = walkingStations.length; i < leng; i++){
-    //   var TrainArray = Trains.find
-    // }
+      for(var i = 0, leng = walkingStations.length; i < leng; i++){
+        var TrainArray = Trains.find({LocationCode: walkingStations[i].Code}).fetch();
 
+        trains.concat(TrainArray);
+      }
+
+      Session.set("trains", trains);
+      debugger;
+    });
   });
 });
 
 Template.mobile.helpers({
   locations: function(){
-    if(Session.equals("userLocation", undefined)){
+    if(Session.equals("trainList", undefined)){
       return "Loading Location....";
     }
-    return mobile.walkingDistanceStations(Stations.find().fetch());
+    
   }
 });
