@@ -35,20 +35,19 @@ Meteor.subscribe('stations', function(){
       for(var i = 0, leng = walkingStations.length; i < leng; i++){
         var TrainArray = Trains.find({LocationCode: walkingStations[i].Code}).fetch();
 
-        trains.concat(TrainArray);
+        var trains = trains.concat(TrainArray);
       }
 
       Session.set("trains", trains);
-      debugger;
     });
   });
 });
 
 Template.mobile.helpers({
   locations: function(){
-    if(Session.equals("trainList", undefined)){
+    if(Session.equals("trains", undefined)){
       return "Loading Location....";
     }
-    
+    return Session.get("trains");
   }
 });
