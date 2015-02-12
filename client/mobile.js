@@ -46,7 +46,7 @@ Meteor.subscribe('stations', function(){
 Template.mobile.helpers({
   trains: function(){
     if(Session.equals("trains", undefined)){
-      return ["Loading Location...."];
+      return [{"Car": "Loading Location...."}];
     }
     return Session.get("trains");
   }
