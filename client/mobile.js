@@ -1,5 +1,18 @@
 Session.set("loading", true);
 
+Template.mobile.helpers({
+  trains: function(){
+    if(Session.equals("trains", undefined)){
+      return;
+    }
+    Session.set("loading", false);
+    return Session.get("trains");
+  },
+  loading: function(){
+    return Session.get("loading");
+  }
+});
+
 mobile = {
   closeStations: [],
   userLocation: null,
@@ -45,15 +58,3 @@ Meteor.subscribe('stations', function(){
   });
 });
 
-Template.mobile.helpers({
-  trains: function(){
-    if(Session.equals("trains", undefined)){
-      return;
-    }
-    Session.set("loading", false);
-    return Session.get("trains");
-  },
-  loading: function(){
-    return Session.get("loading");
-  }
-});
