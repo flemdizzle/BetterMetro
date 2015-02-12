@@ -1,6 +1,7 @@
 
 mobile = {
   closeStations: [],
+  userLocation: null,
   walkingDistanceStations: function(stationArray){
     var walkingStations = [];
 
@@ -9,7 +10,7 @@ mobile = {
       var stationLatLng = new google.maps.LatLng(stationArray[i].Lat, stationArray[i].Lon);
       
       //returns distance between two latlngs using google geometry library
-      var result = google.maps.geometry.spherical.computeDistanceBetween(Session.get("userLocation"), stationLatLng);
+      var result = google.maps.geometry.spherical.computeDistanceBetween(this.userLocation, stationLatLng);
       if(result < 800){
         walkingStations.push(stationArray[i]);
       }
@@ -23,7 +24,7 @@ mobile = {
 
 Meteor.subscribe('stations', function(){
   navigator.geolocation.watchPosition(function(position) {
-    Session.set("userLocation", new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+    mobile.userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     mobile.walkingDistanceStations(Stations.find().fetch());
     
     Deps.autorun(function(){
