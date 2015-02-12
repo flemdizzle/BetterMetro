@@ -1,4 +1,7 @@
 <template name="mobile">
+  {{#if loading}}
+    {{> spinner}}
+  {{/if}}
   <div class="trains">
    {{#each trains}}
     {{> train}}

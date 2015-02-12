@@ -1,3 +1,4 @@
+Session.set("loading", true);
 
 mobile = {
   closeStations: [],
@@ -47,8 +48,12 @@ Meteor.subscribe('stations', function(){
 Template.mobile.helpers({
   trains: function(){
     if(Session.equals("trains", undefined)){
-      return [{"Car": "Loading Location...."}];
+      return;
     }
+    Session.set("loading", false);
     return Session.get("trains");
+  },
+  loading: function(){
+    return Session.get("loading");
   }
 });
