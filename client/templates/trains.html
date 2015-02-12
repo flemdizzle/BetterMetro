@@ -1,9 +1,22 @@
 <template name="trains">
-  {{Name}}
-  <div class="trains">
+  <div class="station-name panel panel-primary">
+    <div class="panel-heading">
+      {{Name}}
+    </div>
+    <div class="panel-body">
+  <table class="train-table table table-striped">
+  <thead>
+    <tr>
+      <th>Dest</th>
+      <th>Min</th>
+    </tr>
+  </thead>
+  <tbody>
    {{#each Trains}}
     {{> train}}
    {{/each}}
+  </tbody>
+</table>
+    </div>
   </div>
-
 </template>
