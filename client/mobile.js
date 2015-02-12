@@ -35,7 +35,7 @@ Meteor.subscribe('stations', function(){
       for(var i = 0, leng = walkingStations.length; i < leng; i++){
         var TrainArray = Trains.find({LocationCode: walkingStations[i].Code}).fetch();
 
-        var trains = trains.concat(TrainArray);
+        trains = trains.concat(TrainArray);
       }
 
       Session.set("trains", trains);
@@ -44,9 +44,9 @@ Meteor.subscribe('stations', function(){
 });
 
 Template.mobile.helpers({
-  locations: function(){
+  trains: function(){
     if(Session.equals("trains", undefined)){
-      return "Loading Location....";
+      return ["Loading Location...."];
     }
     return Session.get("trains");
   }

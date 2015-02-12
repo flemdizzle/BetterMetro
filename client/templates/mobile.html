@@ -1,3 +1,8 @@
 <template name="mobile">
   <h1>{{locations}}</h1>
+  <div class="trains">
+   {{#each trains}}
+    {{> train}}
+   {{/each}}
+  </div> 
 </template>
