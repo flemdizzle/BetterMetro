@@ -3,13 +3,14 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry"></script>
 </head>
 <body>
+  {{#if isPhone}}
+    {{> mobile}}
+  {{/if}}
+  
   {{#if isDesktop}}
     {{> map}}
   {{/if}}
 
-  {{#if isPhone}}
-    {{> mobile}}
-  {{/if}}
 </body>
 
 

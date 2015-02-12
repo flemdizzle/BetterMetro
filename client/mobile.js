@@ -1,12 +1,13 @@
 Session.set("loading", true);
 
 Template.mobile.helpers({
-  trains: function(){
-    if(Session.equals("trains", undefined)){
+  stations: function(){
+    if(Session.equals("stations", undefined)){
+      Session.set("loading")
       return;
     }
     Session.set("loading", false);
-    return Session.get("trains");
+    return Session.get("stations");
   },
   loading: function(){
     return Session.get("loading");
@@ -45,15 +46,17 @@ Meteor.subscribe('stations', function(){
       //have this set a session variable to the current trains
       var walkingStations = mobile.closeStations;
 
-      var trains = [];
+      var stations = [];
 
       for(var i = 0, leng = walkingStations.length; i < leng; i++){
         var TrainArray = Trains.find({LocationCode: walkingStations[i].Code}).fetch();
-
-        trains = trains.concat(TrainArray);
+        var station = {};
+        station.Name = walkingStations[i].Name
+        station.Trains = TrainArray
+        stations.push(station);
       }
 
-      Session.set("trains", trains);
+      Session.set("stations", stations);
     });
   });
 });
