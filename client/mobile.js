@@ -43,6 +43,7 @@ Meteor.subscribe('stations', function(){
     mobile.walkingDistanceStations(Stations.find().fetch());
     
     Deps.autorun(function(){
+      Session.set("stations", mobile.closeStations);
       //have this set a session variable to the current trains
       var walkingStations = mobile.closeStations;
 
